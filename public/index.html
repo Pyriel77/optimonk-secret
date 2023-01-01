@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secret server</title>
+  </head>
+  <body>
+    <form action="/api/secret" method="POST">
+      <label for="secretInput">Please enter your secret!</label><br />
+      <input
+        type="text"
+        id="secretInput"
+        name="secretInput"
+        value="secret"
+        autocomplete="false"
+      /><br />
+      <input
+        type="number"
+        id="revs"
+        name="reveals"
+        value="timesToReveal"
+        autocomplete="false"
+      /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

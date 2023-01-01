@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const secrets = require("./routes/secrets.js");
 const PORT = 3000;
 const connectDB = require("./db/connect.js");
 require("dotenv").config();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
 app.use(express.urlencoded({ extended: false }));

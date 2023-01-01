@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -56,8 +57,12 @@ export default {
     };
   },
   methods: {
-    submitInput() {
-      console.log(this.intent);
+    async submitInput() {
+      await axios.post("http://localhost:3000/api/secret", {
+        secretInput: this.secret,
+        reveals: this.tToReveal,
+      });
+      console.log(this.intent, this.secret, this.tToReveal);
     },
     validation() {
       if (this.secret === "") {

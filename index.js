@@ -16,9 +16,6 @@ const mongoose = require("mongoose");
 
 const Secret = require("./models/secretModel.js");
 
-const logger = require("./logger.js");
-app.use(logger);
-
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);

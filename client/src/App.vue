@@ -27,17 +27,13 @@ export default {
       actualSecret: {},
     };
   },
-  async mounted() {
-    const response = await axios.get("http://localhost:3000/api/secret");
-    this.secrets = response.data.secrets;
-    //console.log(this.secrets);
-  },
+
   methods: {
     async submitHash(intent, hash) {
       this.intent = intent;
       this.hash = hash;
       const resp = await axios.get("http://localhost:3000/api/secret/" + hash);
-      //console.log(this.intent);
+
       this.actualSecret = resp.data;
     },
     async submitSecret(intent, text, times, expires) {
@@ -51,12 +47,11 @@ export default {
         //expireAfterViews: reveals,
         //expireAfter: Date.now(),
         secretInput: text,
-        reveals: times,
+        expireAfterViews: times,
+        expireAfter: expires,
       });
       this.actualSecret = response.data.secret;
     },
-
-    async updateSecret() {},
   },
 };
 </script>

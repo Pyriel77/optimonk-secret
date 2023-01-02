@@ -23,7 +23,7 @@ const getSecret = async (req, res) => {
 };
 
 const createSecret = async (req, res) => {
-  const { secretInput, reveals } = req.body;
+  const { secretInput, expireAfterViews, expireAfter } = req.body;
   const rawHashed = await encrypt(secretInput);
   const hashedSecret = rawHashed.replace(/\//g, "s");
 
@@ -32,14 +32,11 @@ const createSecret = async (req, res) => {
       hash: hashedSecret,
       secretText: secretInput,
       createdAt: Date.now(),
-      expiresAt: Date.now() + 100000,
-      remainingViews: reveals,
+      expiresAt: Date.now() + expireAfter * 60000,
+      remainingViews: expireAfterViews,
     });
     return res.status(200).json({
       secret,
-      //secret: secretInput,
-      //expireAfterViews: reveals,
-      //expireAfter: Date.now(),
     });
   } catch (error) {
     res.status(500).json({ message: error });

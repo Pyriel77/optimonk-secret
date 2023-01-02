@@ -15,12 +15,26 @@ export default {
   data() {
     return {
       secrets: [],
+      secretInput: "",
+      timesToReveal: null,
+      intent: null,
     };
   },
   async mounted() {
     const response = await axios.get("http://localhost:3000/api/secret");
     this.secrets = response.data.secrets;
     console.log(this.secrets);
+  },
+  methods: {
+    async submitSecret(intent, text, times) {
+      this.secretInput = text;
+      this.timesToReveal = times;
+      this.intent = intent;
+      await axios.post("http://localhost:3000/api/secret", {
+        secretInput: text,
+        reveals: times,
+      });
+    },
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <form @submit.prevent="submitInput">
+    <form>
       <h1>SECRET SERVER</h1>
       <div class="form-control">
         <h2>What would you like to do?</h2>
@@ -59,13 +59,17 @@
         <label>Hash</label>
         <input type="text" placeholder="hash of the secret" v-model="hash" />
       </div>
-      <button>Submit</button>
+      <button v-if="intent === 'submit'" @click="submitInput">
+        Submit Secret
+      </button>
+      <button v-if="intent === 'reveal'" @click="submitHash">
+        Submit Hash
+      </button>
     </form>
   </section>
 </template>
 
 <script>
-//import axios from "axios";
 export default {
   data() {
     return {
@@ -78,7 +82,8 @@ export default {
     };
   },
   methods: {
-    submitInput() {
+    submitInput(event) {
+      event.preventDefault();
       this.$emit(
         'submit-secret',
         this.intent,
@@ -86,7 +91,14 @@ export default {
         this.tToReveal,
         this.expires
       );
-      //console.log(this.intent, this.secret, this.tToReveal);
+      this.secret = '';
+      this.tToReveal = '';
+      this.expires = '';
+    },
+    submitHash(event) {
+      event.preventDefault();
+      this.$emit('submit-hash', this.intent, this.hash);
+      this.hash = '';
     },
     validation() {
       if (this.secret === '') {

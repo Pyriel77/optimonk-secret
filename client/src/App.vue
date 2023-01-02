@@ -1,11 +1,17 @@
 <template>
   <section>
-    <user-input @submit-secret="submitSecret"></user-input>
+    <user-input
+      @submit-secret="submitSecret"
+      @submit-hash="submitHash"
+    ></user-input>
     <submitted-secret
       v-if="intent === 'submit'"
       :secret="actualSecret"
     ></submitted-secret>
-    <revealed-secret v-if="intent === 'reveal'"></revealed-secret>
+    <revealed-secret
+      v-if="intent === 'reveal'"
+      :secret="actualSecret"
+    ></revealed-secret>
   </section>
 </template>
 
@@ -22,6 +28,8 @@ export default {
       secretInput: '',
       timesToReveal: null,
       intent: null,
+      hash: '',
+      expires: null,
       actualSecret: {},
     };
   },
@@ -31,10 +39,19 @@ export default {
     //console.log(this.secrets);
   },
   methods: {
-    async submitSecret(intent, text, times) {
+    async submitHash(intent, hash) {
+      this.intent = intent;
+      this.hash = hash;
+      const resp = await axios.get('http://localhost:3000/api/secret/' + hash);
+      console.log(this.intent);
+      this.actualSecret = resp.data;
+    },
+    async submitSecret(intent, text, times, expires) {
       this.secretInput = text;
       this.timesToReveal = times;
       this.intent = intent;
+      this.expires = expires;
+
       const response = await axios.post('http://localhost:3000/api/secret', {
         //secret: secretInput,
         //expireAfterViews: reveals,
@@ -43,8 +60,9 @@ export default {
         reveals: times,
       });
       this.actualSecret = response.data.secret;
-      console.log(response.data);
     },
+
+    //console.log(response.data);
   },
 };
 </script>

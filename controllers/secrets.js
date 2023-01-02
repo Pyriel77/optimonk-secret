@@ -24,7 +24,8 @@ const getSecret = async (req, res) => {
 
 const createSecret = async (req, res) => {
   const { secretInput, reveals } = req.body;
-  const hashedSecret = await encrypt(secretInput);
+  const rawHashed = await encrypt(secretInput);
+  const hashedSecret = rawHashed.replace(/\//g, 's');
 
   try {
     const secret = await Secret.create({

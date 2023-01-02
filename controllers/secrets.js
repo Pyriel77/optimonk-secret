@@ -1,5 +1,5 @@
-const Secret = require('../models/secretModel.js');
-const { encrypt } = require('../crypt.js');
+const Secret = require("../models/secretModel.js");
+const { encrypt } = require("../crypt.js");
 
 const getAllSecrets = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const getSecret = async (req, res) => {
   if (!actualSecret) {
     return res
       .status(404)
-      .json({ success: false, message: 'No secret found!' });
+      .json({ success: false, message: "No secret found!" });
   }
   res.send(actualSecret);
 };
@@ -25,7 +25,7 @@ const getSecret = async (req, res) => {
 const createSecret = async (req, res) => {
   const { secretInput, reveals } = req.body;
   const rawHashed = await encrypt(secretInput);
-  const hashedSecret = rawHashed.replace(/\//g, 's');
+  const hashedSecret = rawHashed.replace(/\//g, "s");
 
   try {
     const secret = await Secret.create({
@@ -46,39 +46,9 @@ const createSecret = async (req, res) => {
   }
 };
 
-const updateSecret = (req, res) => {
-  const { hash } = req.params;
-  const { secretInput } = req.body;
+const updateSecret = async (req, res) => {};
 
-  const secretToUpdate = secrets.find((secret) => secret.hash === hash);
-  if (!secretToUpdate) {
-    return res.status(404).json({
-      success: false,
-      message: `No secret found with '${hash}' hash!`,
-    });
-  }
-  const newSecrets = secrets.map((secret) => {
-    if (secret.hash === hash) {
-      secret.secretText = secretInput;
-    }
-    return secret;
-  });
-  res.status(200).json({ success: true, data: newSecrets });
-};
-
-const deleteSecret = (req, res) => {
-  const { hash } = req.params;
-
-  const secretToDelete = secrets.find((secret) => secret.hash === hash);
-  if (!secretToDelete) {
-    return res.status(404).json({
-      success: false,
-      message: `No secret found with '${hash}' hash!`,
-    });
-  }
-  const newSecrets = secrets.filter((secret) => secret.hash !== hash);
-  return res.status(200).json({ success: true, data: newSecrets });
-};
+const deleteSecret = async (req, res) => {};
 
 module.exports = {
   getAllSecrets,

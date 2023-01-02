@@ -1,40 +1,34 @@
 <template>
   <section>
-    <user-input
-      @submit-secret="submitSecret"
-      @submit-hash="submitHash"
-    ></user-input>
+    <user-input @submit-secret="submitSecret" @submit-hash="submitHash"></user-input>
     <submitted-secret
       v-if="intent === 'submit'"
       :secret="actualSecret"
     ></submitted-secret>
-    <revealed-secret
-      v-if="intent === 'reveal'"
-      :secret="actualSecret"
-    ></revealed-secret>
+    <revealed-secret v-if="intent === 'reveal'" :secret="actualSecret"></revealed-secret>
   </section>
 </template>
 
 <script>
-import axios from 'axios';
-import UserInput from './components/UserInput.vue';
-import SubmittedSecret from './components/SubmittedSecret.vue';
-import RevealedSecret from './components/RevealedSecret.vue';
+import axios from "axios";
+import UserInput from "./components/UserInput.vue";
+import SubmittedSecret from "./components/SubmittedSecret.vue";
+import RevealedSecret from "./components/RevealedSecret.vue";
 export default {
   components: { UserInput, SubmittedSecret, RevealedSecret },
   data() {
     return {
       secrets: [],
-      secretInput: '',
+      secretInput: "",
       timesToReveal: null,
       intent: null,
-      hash: '',
+      hash: "",
       expires: null,
       actualSecret: {},
     };
   },
   async mounted() {
-    const response = await axios.get('http://localhost:3000/api/secret');
+    const response = await axios.get("http://localhost:3000/api/secret");
     this.secrets = response.data.secrets;
     //console.log(this.secrets);
   },
@@ -42,8 +36,8 @@ export default {
     async submitHash(intent, hash) {
       this.intent = intent;
       this.hash = hash;
-      const resp = await axios.get('http://localhost:3000/api/secret/' + hash);
-      console.log(this.intent);
+      const resp = await axios.get("http://localhost:3000/api/secret/" + hash);
+      //console.log(this.intent);
       this.actualSecret = resp.data;
     },
     async submitSecret(intent, text, times, expires) {
@@ -52,7 +46,7 @@ export default {
       this.intent = intent;
       this.expires = expires;
 
-      const response = await axios.post('http://localhost:3000/api/secret', {
+      const response = await axios.post("http://localhost:3000/api/secret", {
         //secret: secretInput,
         //expireAfterViews: reveals,
         //expireAfter: Date.now(),
@@ -62,7 +56,7 @@ export default {
       this.actualSecret = response.data.secret;
     },
 
-    //console.log(response.data);
+    async updateSecret() {},
   },
 };
 </script>

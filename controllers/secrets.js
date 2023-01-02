@@ -1,5 +1,5 @@
-const Secret = require("../models/secretModel.js");
-const { encrypt } = require("../crypt.js");
+const Secret = require('../models/secretModel.js');
+const { encrypt } = require('../crypt.js');
 
 const getAllSecrets = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const getSecret = async (req, res) => {
   if (!actualSecret) {
     return res
       .status(404)
-      .json({ success: false, message: "No secret found!" });
+      .json({ success: false, message: 'No secret found!' });
   }
   res.send(actualSecret);
 };
@@ -35,9 +35,10 @@ const createSecret = async (req, res) => {
       remainingViews: reveals,
     });
     return res.status(200).json({
-      secret: secretInput,
-      expireAfterViews: reveals,
-      expireAfter: Date.now(),
+      secret,
+      //secret: secretInput,
+      //expireAfterViews: reveals,
+      //expireAfter: Date.now(),
     });
   } catch (error) {
     res.status(500).json({ message: error });

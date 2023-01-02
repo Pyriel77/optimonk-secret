@@ -5,11 +5,23 @@
       <div class="form-control">
         <h2>What would you like to do?</h2>
         <div>
-          <input id="intention" name="int" type="radio" value="submit" v-model="intent" />
+          <input
+            id="intention"
+            name="int"
+            type="radio"
+            value="submit"
+            v-model="intent"
+          />
           <label for="intention">Submit a secret</label>
         </div>
         <div>
-          <input id="intention" name="int" type="radio" value="reveal" v-model="intent" />
+          <input
+            id="intention"
+            name="int"
+            type="radio"
+            value="reveal"
+            v-model="intent"
+          />
           <label for="intention">Reveal a secret</label>
         </div>
       </div>
@@ -35,6 +47,14 @@
           v-model="tToReveal"
         />
       </div>
+      <div v-if="intent === 'submit'" class="form-control">
+        <label>Expiration in minutes</label>
+        <input
+          type="number"
+          placeholder="enter minutes (if 0 then never expires)"
+          v-model="expires"
+        />
+      </div>
       <div v-if="intent === 'reveal'" class="form-control">
         <label>Hash</label>
         <input type="text" placeholder="hash of the secret" v-model="hash" />
@@ -49,23 +69,30 @@
 export default {
   data() {
     return {
-      secret: "",
-      hash: "",
+      secret: '',
+      hash: '',
       tToReveal: null,
+      expires: null,
       intent: null,
-      secretValidity: "pending",
+      secretValidity: 'pending',
     };
   },
   methods: {
     submitInput() {
-      this.$emit("submit-secret", this.intent, this.secret, this.tToReveal);
+      this.$emit(
+        'submit-secret',
+        this.intent,
+        this.secret,
+        this.tToReveal,
+        this.expires
+      );
       //console.log(this.intent, this.secret, this.tToReveal);
     },
     validation() {
-      if (this.secret === "") {
-        this.secretValidity = "invalid";
+      if (this.secret === '') {
+        this.secretValidity = 'invalid';
       } else {
-        this.secretValidity = "valid";
+        this.secretValidity = 'valid';
       }
     },
   },
@@ -73,7 +100,7 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap');
 form {
   font-family: Barlow, sans-serif;
   margin: 2rem auto;
@@ -117,15 +144,15 @@ select {
   width: auto;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
   display: inline-block;
   width: auto;
   margin-right: 1rem;
 }
 
-input[type="checkbox"] + label,
-input[type="radio"] + label {
+input[type='checkbox'] + label,
+input[type='radio'] + label {
   font-weight: normal;
 }
 

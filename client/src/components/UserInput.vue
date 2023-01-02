@@ -5,23 +5,11 @@
       <div class="form-control">
         <h2>What would you like to do?</h2>
         <div>
-          <input
-            id="intention"
-            name="int"
-            type="radio"
-            value="submit"
-            v-model="intent"
-          />
+          <input id="intention" name="int" type="radio" value="submit" v-model="intent" />
           <label for="intention">Submit a secret</label>
         </div>
         <div>
-          <input
-            id="intention"
-            name="int"
-            type="radio"
-            value="reveal"
-            v-model="intent"
-          />
+          <input id="intention" name="int" type="radio" value="reveal" v-model="intent" />
           <label for="intention">Reveal a secret</label>
         </div>
       </div>
@@ -31,15 +19,13 @@
         :class="{ invalid: secretValidity === 'invalid' }"
       >
         <label>Secret</label>
-        <input
-          type="text"
-          placeholder="enter your secret"
-          v-model="secret"
-          @blur="validation"
-        />
-        <p v-if="secretValidity === 'invalid'">Please provide a secret!</p>
+        <input type="text" placeholder="enter your secret" v-model="secret" />
       </div>
-      <div v-if="intent === 'submit'" class="form-control">
+      <div
+        v-if="intent === 'submit'"
+        class="form-control"
+        :class="{ invalid: secretValidity === 'invalid' }"
+      >
         <label>Times to reveal</label>
         <input
           type="number"
@@ -51,7 +37,7 @@
         <label>Expiration in minutes</label>
         <input
           type="number"
-          placeholder="enter minutes (if 0 then never expires)"
+          placeholder="enter minutes (if 0 then never expires - default = 0)"
           v-model="expires"
         />
       </div>
@@ -59,12 +45,11 @@
         <label>Hash</label>
         <input type="text" placeholder="hash of the secret" v-model="hash" />
       </div>
-      <button v-if="intent === 'submit'" @click="submitInput">
-        Submit Secret
-      </button>
-      <button v-if="intent === 'reveal'" @click="submitHash">
-        Submit Hash
-      </button>
+      <p v-if="secretValidity === 'invalid'" :style="{ color: 'red' }">
+        One or more input missing!
+      </p>
+      <button v-if="intent === 'submit'" @click="submitInput">Submit Secret</button>
+      <button v-if="intent === 'reveal'" @click="submitHash">Submit Hash</button>
     </form>
   </section>
 </template>
@@ -73,46 +58,41 @@
 export default {
   data() {
     return {
-      secret: '',
-      hash: '',
+      secret: "",
+      hash: "",
       tToReveal: null,
       expires: null,
       intent: null,
-      secretValidity: 'pending',
+      secretValidity: "pending",
     };
   },
   methods: {
     submitInput(event) {
       event.preventDefault();
-      this.$emit(
-        'submit-secret',
-        this.intent,
-        this.secret,
-        this.tToReveal,
-        this.expires
-      );
-      this.secret = '';
-      this.tToReveal = '';
-      this.expires = '';
+      if (this.secret === "" || this.tToReveal === null) {
+        this.secretValidity = "invalid";
+        return;
+      }
+      this.$emit("submit-secret", this.intent, this.secret, this.tToReveal, this.expires);
+      this.secret = "";
+      this.tToReveal = "";
+      this.expires = "";
     },
     submitHash(event) {
       event.preventDefault();
-      this.$emit('submit-hash', this.intent, this.hash);
-      this.hash = '';
-    },
-    validation() {
-      if (this.secret === '') {
-        this.secretValidity = 'invalid';
-      } else {
-        this.secretValidity = 'valid';
+      if (this.hash === "") {
+        this.secretValidity = "invalid";
+        return;
       }
+      this.$emit("submit-hash", this.intent, this.hash);
+      this.hash = "";
     },
   },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap");
 form {
   font-family: Barlow, sans-serif;
   margin: 2rem auto;
@@ -156,15 +136,15 @@ select {
   width: auto;
 }
 
-input[type='checkbox'],
-input[type='radio'] {
+input[type="checkbox"],
+input[type="radio"] {
   display: inline-block;
   width: auto;
   margin-right: 1rem;
 }
 
-input[type='checkbox'] + label,
-input[type='radio'] + label {
+input[type="checkbox"] + label,
+input[type="radio"] + label {
   font-weight: normal;
 }
 

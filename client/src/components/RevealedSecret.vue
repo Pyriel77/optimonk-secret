@@ -1,12 +1,13 @@
 <template>
   <section>
-    <h1>{{ secret }}</h1>
+    <h1>Revealed secret:</h1>
+    <p>{{ secret }}</p>
   </section>
 </template>
 
 <script>
 export default {
-  props: ['secret'],
+  props: ["secret"],
 };
 </script>
 

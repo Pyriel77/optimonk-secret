@@ -18,7 +18,9 @@ const Secret = require('./models/secretModel.js');
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI);
+    await connectDB(
+      'mongodb+srv://Pyriel77:glue77Ard@nodejsprojects.enrla.mongodb.net/Optimonk?retryWrites=true&w=majority'
+    );
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}`);
     });

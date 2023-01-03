@@ -1,5 +1,5 @@
-const Secret = require("../models/secretModel.js");
-const { encrypt } = require("../crypt.js");
+const Secret = require('../models/secretModel.js');
+const { encrypt } = require('../crypt.js');
 
 const getAllSecrets = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const getSecret = async (req, res) => {
   if (!actualSecret) {
     return res
       .status(404)
-      .json({ success: false, message: "No secret found!" });
+      .json({ success: false, message: 'No secret found!' });
   }
   res.send(actualSecret);
 };
@@ -25,7 +25,7 @@ const getSecret = async (req, res) => {
 const createSecret = async (req, res) => {
   const { secretInput, expireAfterViews, expireAfter } = req.body;
   const rawHashed = await encrypt(secretInput);
-  const hashedSecret = rawHashed.replace(/\//g, "s");
+  const hashedSecret = rawHashed.replace(/\//g, 's');
 
   try {
     const secret = await Secret.create({
